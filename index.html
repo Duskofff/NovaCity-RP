@@ -1,515 +1,282 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>New Dawn RP - Serveur GMod</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        :root {
-            --primary: #667eea;
-            --secondary: #764ba2;
-            --accent: #f093fb;
-            --dark: #0f0f23;
-            --card: #1a1a2e;
-            --text: #ffffff;
-            --text-muted: #a0a0a0;
-            --border: #2a2a3e;
-            --success: #4ecdc4;
-            --warning: #ffe66d;
-            --danger: #ff6b6b;
-        }
-        
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, var(--dark) 0%, #16213e 50%, #0f3460 100%);
-            color: var(--text);
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
-        
-        .background-effects {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: -1;
-            background: 
-                radial-gradient(circle at 25% 25%, rgba(102, 126, 234, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 75% 75%, rgba(240, 147, 251, 0.1) 0%, transparent 50%);
-            animation: float 15s ease-in-out infinite;
-        }
-        
-        @keyframes float {
-            0%, 100% { transform: translate(0, 0) rotate(0deg); }
-            33% { transform: translate(10px, -10px) rotate(1deg); }
-            66% { transform: translate(-5px, 5px) rotate(-1deg); }
-        }
-        
-        /* Navigation */
-        .navbar {
-            background: rgba(26, 26, 46, 0.95);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--border);
-            padding: 1rem 0;
-            position: fixed;
-            top: 0;
-            width: 100%;
-            z-index: 1000;
-        }
-        
-        .nav-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 2rem;
-        }
-        
-        .logo {
-            font-size: 1.8rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        .nav-links {
-            display: flex;
-            list-style: none;
-            gap: 2rem;
-        }
-        
-        .nav-links a {
-            color: var(--text-muted);
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            padding: 0.5rem 1rem;
-            border-radius: 10px;
-            position: relative;
-        }
-        
-        .nav-links a:hover {
-            color: var(--text);
-            background: rgba(102, 126, 234, 0.1);
-            transform: translateY(-2px);
-        }
-        
-        .nav-links a.active {
-            color: var(--primary);
-            background: rgba(102, 126, 234, 0.2);
-        }
-        
-        .nav-links a.disabled {
-            color: #555;
-            cursor: not-allowed;
-            opacity: 0.5;
-        }
-        
-        .nav-links a.disabled:hover {
-            color: #555;
-            background: none;
-            transform: none;
-        }
-        
-        /* Main content */
-        .main-content {
-            margin-top: 100px;
-            max-width: 1000px;
-            margin-left: auto;
-            margin-right: auto;
-            padding: 2rem;
-        }
-        
-        .page-header {
-            text-align: center;
-            margin-bottom: 3rem;
-        }
-        
-        .page-title {
-            font-size: 3rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        .page-subtitle {
-            font-size: 1.2rem;
-            color: var(--text-muted);
-            font-weight: 300;
-        }
-        
-        /* Rules sections */
-        .rules-container {
-            display: grid;
-            gap: 2rem;
-        }
-        
-        .rules-section {
-            background: rgba(26, 26, 46, 0.6);
-            backdrop-filter: blur(20px);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 2rem;
-            transition: all 0.3s ease;
-        }
-        
-        .rules-section:hover {
-            border-color: var(--primary);
-            box-shadow: 0 10px 40px rgba(102, 126, 234, 0.1);
-        }
-        
-        .section-title {
-            font-size: 1.8rem;
-            font-weight: 600;
-            color: var(--primary);
-            margin-bottom: 1.5rem;
-            text-align: center;
-            position: relative;
-        }
-        
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 60px;
-            height: 3px;
-            background: linear-gradient(90deg, var(--primary), var(--accent));
-            border-radius: 2px;
-        }
-        
-        .intro-text {
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(240, 147, 251, 0.1));
-            border: 1px solid rgba(102, 126, 234, 0.2);
-            border-radius: 15px;
-            padding: 1.5rem;
-            margin-bottom: 2rem;
-            text-align: center;
-        }
-        
-        .warning-notice {
-            background: linear-gradient(135deg, rgba(255, 107, 107, 0.15), rgba(255, 102, 102, 0.15));
-            border: 1px solid rgba(255, 107, 107, 0.3);
-            border-radius: 15px;
-            padding: 1.5rem;
-            margin: 1.5rem 0;
-            text-align: center;
-        }
-        
-        .rules-grid {
-            display: grid;
-            gap: 1.5rem;
-            margin-top: 2rem;
-        }
-        
-        .rule-card {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
-            padding: 1.5rem;
-            transition: all 0.3s ease;
-        }
-        
-        .rule-card:hover {
-            background: rgba(255, 255, 255, 0.05);
-            border-color: rgba(102, 126, 234, 0.3);
-            transform: translateY(-2px);
-        }
-        
-        .rule-name {
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: var(--text);
-            margin-bottom: 0.8rem;
-        }
-        
-        .rule-description {
-            color: var(--text-muted);
-            line-height: 1.6;
-            margin-bottom: 1rem;
-        }
-        
-        .rule-example {
-            background: rgba(78, 205, 196, 0.1);
-            border: 1px solid rgba(78, 205, 196, 0.3);
-            border-radius: 10px;
-            padding: 1rem;
-            font-size: 0.9rem;
-            color: var(--text-muted);
-            font-style: italic;
-        }
-        
-        .rule-example::before {
-            content: '💡 Exemple : ';
-            font-weight: 600;
-            color: var(--success);
-            font-style: normal;
-        }
-        
-        /* Footer */
-        .footer {
-            text-align: center;
-            padding: 3rem 2rem;
-            margin-top: 4rem;
-            border-top: 1px solid var(--border);
-            color: var(--text-muted);
-        }
-        
-        /* Responsive */
-        @media (max-width: 768px) {
-            .nav-links {
-                gap: 1rem;
-            }
-            
-            .nav-links a {
-                padding: 0.3rem 0.8rem;
-                font-size: 0.9rem;
-            }
-            
-            .page-title {
-                font-size: 2rem;
-            }
-            
-            .main-content {
-                padding: 1rem;
-            }
-            
-            .rules-section {
-                padding: 1.5rem;
-            }
-        }
-        
-        .fade-in {
-            opacity: 0;
-            transform: translateY(20px);
-            animation: fadeIn 0.6s ease-out forwards;
-        }
-        
-        @keyframes fadeIn {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nova Loading Screen | Officiel</title>
+
+<link href="https://db.onlinewebfonts.com/c/2206d6cc490084998d531e8c1b2cbb4a?family=Druk+Wide+Bold" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;600;800&display=swap" rel="stylesheet">
+
+<style>
+:root {
+    --primary-color: #5393AC;
+    --bg-glass: rgba(255,255,255,0.05);
+    --border-glass: rgba(255,255,255,0.15);
+    --text-color: #ffffff;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    font-family: 'Montserrat', sans-serif;
+    color: var(--text-color);
+}
+
+/* ===== BACKGROUND ===== */
+.bg-fixed {
+    position: fixed;
+    inset: 0;
+    background: url("fond.jpg") center / cover no-repeat;
+    z-index: 0;
+}
+
+/* ===== OVERLAY ===== */
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.55);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 1;
+}
+
+/* ===== CONTENT ===== */
+.container {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100vh;
+    padding: 0 8%;
+}
+
+.panel {
+    width: 360px;
+    background: var(--bg-glass);
+    border: 1px solid var(--border-glass);
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+}
+
+h2 {
+    text-align: center;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin: 0 0 25px;
+    border-bottom: 2px solid var(--primary-color);
+    padding-bottom: 15px;
+    font-size: 1.2em;
+}
+
+/* ===== OWNERS ===== */
+.owner-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    padding: 12px;
+    background: rgba(255,255,255,0.03);
+    border-radius: 15px;
+}
+
+.owner-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 15px;
+    border: 2px solid var(--primary-color);
+    object-fit: cover;
+}
+
+.owner-name {
+    font-weight: 600;
+    font-size: 0.95em;
+}
+
+.owner-rank {
+    font-size: 0.75em;
+    color: var(--primary-color);
+    text-transform: uppercase;
+    font-weight: 800;
+}
+
+/* ===== LOGO ===== */
+.logo-area { text-align: center; }
+
+.logo-text {
+    font-family: "Druk Wide Bold", sans-serif;
+    font-size: 110px;
+    margin: 0;
+    line-height: 0.8;
+    color: var(--primary-color);
+    filter: drop-shadow(0 0 25px rgba(83,147,172,0.5));
+}
+
+.logo-sub {
+    letter-spacing: 8px;
+    opacity: 0.7;
+    margin-top: 20px;
+    font-weight: 300;
+    font-size: 0.9em;
+}
+
+/* ===== RULES ===== */
+.rules-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.rule-item {
+    margin-bottom: 12px;
+    padding: 12px;
+    background: rgba(0,0,0,0.4);
+    border-left: 4px solid var(--primary-color);
+    font-size: 0.85em;
+    border-radius: 0 10px 10px 0;
+}
+
+/* ===== FOOTER ===== */
+.footer {
+    position: absolute;
+    bottom: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 45%;
+    text-align: center;
+    z-index: 2;
+}
+
+.status-container {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    font-size: 0.8em;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.progress-container {
+    width: 100%;
+    height: 8px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    width: 0%;
+    height: 100%;
+    background: var(--primary-color);
+    box-shadow: 0 0 15px var(--primary-color);
+    transition: width 0.4s ease-out;
+}
+</style>
 </head>
+
 <body>
-    <div class="background-effects"></div>
-    
-    <!-- Navigation -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <div class="logo">New Dawn RP</div>
-            <ul class="nav-links">
-                <li><a href="#" class="active">Règlement</a></li>
-                <li><a href="#" class="disabled">Boutique</a></li>
-                <li><a href="#" class="disabled">Forum</a></li>
-                <li><a href="#" class="disabled">Discord</a></li>
-                <li><a href="#" class="disabled">Équipe</a></li>
-            </ul>
-        </div>
-    </nav>
-    
-    <!-- Main Content -->
-    <main class="main-content">
-        <div class="page-header">
-            <h1 class="page-title">Règlement</h1>
-            <p class="page-subtitle">Serious Roleplay - New Dawn RP</p>
-        </div>
-        
-        <div class="rules-container">
-            <!-- Introduction -->
-            <div class="rules-section fade-in">
-                <div class="intro-text">
-                    <p><strong>Bienvenue sur New Dawn RP</strong>, un serveur <strong>Serious RP</strong>.</p>
-                    <p>Pour garantir une expérience immersive et agréable, le respect des règles est obligatoire.</p>
-                </div>
-                
-                <div class="warning-notice">
-                    <strong>⚠️ SANCTIONS :</strong> Avertissement, kick, bannissement temporaire ou permanent selon la gravité.
-                </div>
-            </div>
-            
-            <!-- Règles Générales -->
-            <div class="rules-section fade-in">
-                <h2 class="section-title">Règles Générales RP</h2>
-                
-                <div class="rules-grid">
-                    <div class="rule-card">
-                        <h3 class="rule-name">NoPainRP / NoFearRP</h3>
-                        <p class="rule-description">Vous devez jouer la douleur et la peur comme dans la vraie vie.</p>
-                        <div class="rule-example">Si vous êtes blessé, vous ne pouvez pas courir normalement. Si on vous braque, vous devez coopérer.</div>
-                    </div>
-                    
-                    <div class="rule-card">
-                        <h3 class="rule-name">FreeKill</h3>
-                        <p class="rule-description">Tuer un joueur sans raison RP valable est interdit.</p>
-                        <div class="rule-example">Vous ne pouvez pas tuer quelqu'un parce qu'il vous a regardé de travers.</div>
-                    </div>
-                    
-                    <div class="rule-card">
-                        <h3 class="rule-name">NLR (New Life Rule)</h3>
-                        <p class="rule-description">Vous perdez la mémoire après votre mort. Interdiction de retourner sur les lieux pendant 5 minutes.</p>
-                        <div class="rule-example">Vous mourrez dans une fusillade, vous ne pouvez pas revenir pour vous venger.</div>
-                    </div>
-                    
-                    <div class="rule-card">
-                        <h3 class="rule-name">FreeArrest</h3>
-                        <p class="rule-description">Arrêter quelqu'un sans raison RP est interdit.</p>
-                        <div class="rule-example">Un policier doit avoir des preuves ou un motif valable pour arrêter.</div>
-                    </div>
-                    
-                    <div class="rule-card">
-                        <h3 class="rule-name">FreeTaze</h3>
-                        <p class="rule-description">Taser un joueur sans raison RP est interdit.</p>
-                        <div class="rule-example">Taser un citoyen qui vous regarde sans raison est interdit.</div>
-                    </div>
-                    
-                    <div class="rule-card">
-                        <h3 class="rule-name">FreePunch</h3>
-                        <p class="rule-description">Frapper un joueur sans justification RP est interdit.</p>
-                        <div class="rule-example">Donner un coup de poing sans interaction RP préalable.</div>
-                    </div>
-                    
-                    <div class="rule-card">
-                        <h3 class="rule-name">PropsKill</h3>
-                        <p class="rule-description">Utiliser un objet pour tuer un joueur est interdit.</p>
-                        <div class="rule-example">Écraser un joueur avec un frigo ou autre objet.</div>
-                    </div>
-                    
-                    <div class="rule-card">
-                        <h3 class="rule-name">PropsSurf</h3>
-                        <p class="rule-description">Utiliser un objet pour se déplacer de manière irréaliste est interdit.</p>
-                        <div class="rule-example">S'envoler avec une planche sous les pieds.</div>
-                    </div>
-                    
-                    <div class="rule-card">
-                        <h3 class="rule-name">PropsBlock</h3>
-                        <p class="rule-description">Bloquer un accès avec un objet est interdit.</p>
-                        <div class="rule-example">Placer des objets devant une porte pour bloquer le passage.</div>
-                    </div>
-                    
-                    <div class="rule-card">
-                        <h3 class="rule-name">MetaGaming</h3>
-                        <p class="rule-description">Utiliser des informations obtenues hors RP dans le RP est interdit.</p>
-                        <div class="rule-example">Arrêter un criminel car vous avez vu son plan sur Discord.</div>
-                    </div>
-                    
-                    <div class="rule-card">
-                        <h3 class="rule-name">PowerGaming</h3>
-                        <p class="rule-description">Forcer des actions irréalistes sans laisser de chance à l'autre joueur.</p>
-                        <div class="rule-example">"/me vous attache sans vous laisser réagir"</div>
-                    </div>
-                    
-                    <div class="rule-card">
-                        <h3 class="rule-name">BunnyHop</h3>
-                        <p class="rule-description">Se déplacer en sautant en boucle pour aller plus vite est interdit.</p>
-                        <div class="rule-example">Sauter non-stop pour fuir la police.</div>
-                    </div>
-                    
-                    <div class="rule-card">
-                        <h3 class="rule-name">JumpShoot</h3>
-                        <p class="rule-description">Tirer en sautant est interdit.</p>
-                        <div class="rule-example">Sauter et tirer sans cesse pour éviter les balles.</div>
-                    </div>
-                    
-                    <div class="rule-card">
-                        <h3 class="rule-name">HRP vocal</h3>
-                        <p class="rule-description">Parler hors RP en vocal durant une scène RP est interdit.</p>
-                        <div class="rule-example">Discuter de sa journée pendant une prise d'otage.</div>
-                    </div>
-                    
-                    <div class="rule-card">
-                        <h3 class="rule-name">UseBug</h3>
-                        <p class="rule-description">Exploiter un bug ou un glitch est strictement interdit.</p>
-                        <div class="rule-example">Passer à travers les murs, duplication d'argent, invincibilité.</div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Règles Armes -->
-            <div class="rules-section fade-in">
-                <h2 class="section-title">Règles des Armes</h2>
-                
-                <div class="rules-grid">
-                    <div class="rule-card">
-                        <h3 class="rule-name">Rangement d'armes en RP</h3>
-                        <p class="rule-description">Interdiction de ranger une arme pendant une scène RP.</p>
-                        <div class="rule-example">En poursuite, vous ne pouvez pas cacher votre arme dans une banque.</div>
-                    </div>
-                    
-                    <div class="rule-card">
-                        <h3 class="rule-name">Sortie d'armes après fouille</h3>
-                        <p class="rule-description">Interdiction de sortir une arme après avoir été fouillé.</p>
-                        <div class="rule-example">Vous ne pouvez pas sortir un pistolet si un policier vous a fouillé.</div>
-                    </div>
-                    
-                    <div class="rule-card">
-                        <h3 class="rule-name">Suicide pour échapper au RP</h3>
-                        <p class="rule-description">Se suicider pour échapper à une action RP est interdit.</p>
-                        <div class="rule-example">Vous ne pouvez pas vous suicider pour éviter la prison.</div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Rappel -->
-            <div class="rules-section fade-in">
-                <h2 class="section-title">Rappel Important</h2>
-                
-                <div class="intro-text">
-                    <p><strong>En cas de doute sur une règle, contactez un membre du staff avant d'agir.</strong></p>
-                    <p>Ce règlement protège l'expérience de jeu de chacun. Le staff peut sanctionner toute action abusive, même non listée ici.</p>
-                </div>
+
+<div class="bg-fixed"></div>
+<div class="overlay"></div>
+
+<div class="container">
+
+    <!-- ===== DIRECTION ===== -->
+    <div class="panel">
+        <h2>Direction</h2>
+
+        <div class="owner-item">
+            <img class="owner-avatar"
+                 src="https://cdn.discordapp.com/avatars/1391081178370674801/12377111734d7b53b8c4e9eb4b7781ae.webp?size=256">
+            <div>
+                <div class="owner-name">David Dubois</div>
+                <div class="owner-rank">Fondateur</div>
             </div>
         </div>
-    </main>
-    
-    <footer class="footer">
-        <p>🎮 New Dawn RP - Serveur Serious Roleplay</p>
-        <p>Respectez les règles, respectez les autres joueurs !</p>  
-    </footer>
-    
-    <script>
-        // Animation fade-in au scroll
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.animationDelay = Math.random() * 0.2 + 's';
-                    entry.target.classList.add('fade-in');
-                }
-            });
-        }, {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        });
-        
-        document.querySelectorAll('.rules-section').forEach(el => {
-            observer.observe(el);
-        });
-        
-        // Désactiver les liens non fonctionnels
-        document.querySelectorAll('.nav-links a.disabled').forEach(link => {
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-            });
-        });
-    </script>
+
+        <div class="owner-item">
+            <img class="owner-avatar"
+                 src="https://cdn.discordapp.com/avatars/1459953462560161904/a2c13cd31792a1f208a922f0c1cf68e2.webp?size=256">
+            <div>
+                <div class="owner-name">John Turneur</div>
+                <div class="owner-rank">Fondateur</div>
+            </div>
+        </div>
+
+        <div class="owner-item">
+            <img class="owner-avatar"
+                 src="https://cdn.discordapp.com/avatars/1459982973280583903/d837230f0ad4094cc06dce3fc929fcd2.webp?size=256">
+            <div>
+                <div class="owner-name">Kuzan Xiryks</div>
+                <div class="owner-rank">Fondateur</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== LOGO ===== -->
+    <div class="logo-area">
+        <h1 class="logo-text">NOVA</h1>
+        <div class="logo-sub">SEMI-ROLEPLAY</div>
+    </div>
+
+    <!-- ===== RULES ===== -->
+    <div class="panel">
+        <h2>Règlement</h2>
+        <ul class="rules-list">
+            <li class="rule-item">1. Respect du FearRP et du PainRP</li>
+            <li class="rule-item">2. Aucun FreeKill / FreeArrest</li>
+            <li class="rule-item">3. Micro obligatoire et clair</li>
+            <li class="rule-item">4. Respect HRP et RP</li>
+            <li class="rule-item">5. Gameplay réaliste exigé</li>
+        </ul>
+    </div>
+
+</div>
+
+<div class="footer">
+    <div class="status-container">
+        <div id="status">Initialisation…</div>
+        <div id="percent">0%</div>
+    </div>
+    <div class="progress-container">
+        <div id="loading-bar" class="progress-bar"></div>
+    </div>
+</div>
+
+<script>
+var totalFiles = 0;
+
+function SetFilesNeeded(n) { totalFiles = n; }
+
+function SetFilesRemaining(r) {
+    if (totalFiles > 0) {
+        let p = Math.floor(((totalFiles - r) / totalFiles) * 100);
+        updateBar(p);
+    }
+}
+
+function SetStatusChanged(s) {
+    document.getElementById("status").innerText = s;
+}
+
+function DownloadingFile(f) {
+    document.getElementById("status").innerText = "Chargement : " + f;
+}
+
+function updateBar(p) {
+    p = Math.min(p, 100);
+    document.getElementById("loading-bar").style.width = p + "%";
+    document.getElementById("percent").innerText = p + "%";
+}
+</script>
+
 </body>
 </html>
